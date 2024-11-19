@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,9 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'check_in_date' => $this->faker->date(),
+            'enum' => $this->faker->randomElement(['confirmed', 'unconfirmed']),
+            'user_id' => User::factory(),
         ];
     }
 }
