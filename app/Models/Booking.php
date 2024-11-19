@@ -11,7 +11,7 @@ class Booking extends Model
 
     protected $fillable = [
         'check_in_date',
-        'enum',
+        'status',
         'status',
         'user_id'
     ];
