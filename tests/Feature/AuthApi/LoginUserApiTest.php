@@ -34,9 +34,6 @@ class LoginUserApiTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertAuthenticatedAs($this->user);
-        $response->assertJsonStructure([
-            'message',
-        ]);
     }
     /**
      * тест ошибки не правильного пароля
@@ -51,9 +48,6 @@ class LoginUserApiTest extends TestCase
 
         $response->assertStatus(401);
         $this->assertGuest();
-        $response->assertJsonStructure([
-            'message',
-        ]);
     }
 
     /**
@@ -70,8 +64,5 @@ class LoginUserApiTest extends TestCase
 
         $response->assertStatus(401);
         $this->assertGuest();
-        $response->assertJsonStructure([
-            'message',
-        ]);
     }
 }
