@@ -6,6 +6,7 @@ use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class AuthApiController extends Controller
 {
@@ -26,9 +27,11 @@ class AuthApiController extends Controller
      */
     public function register(RegisterUserRequest $request)
     {
-        unset($request['password_confirmation']);
-        User::create($request->all());
-
+        User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+        ]);
         if (! $token = auth()->attempt($request->only('email', 'password'))) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
