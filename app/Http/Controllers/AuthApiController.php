@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,7 @@ class AuthApiController extends Controller
             ->cookie('token', $token, 60 * 24, '/', null, true, true); //httpOnly
     }
 
-    public function login()
+    public function login(LoginRequest $request)
     {
         $credentials = request(['email', 'password']);
 
