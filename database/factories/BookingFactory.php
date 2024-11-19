@@ -19,7 +19,7 @@ class BookingFactory extends Factory
     {
         return [
             'check_in_date' => $this->faker->date(),
-            'enum' => $this->faker->randomElement(['confirmed', 'unconfirmed']),
+            'status' => $this->faker->randomElement(['confirmed', 'unconfirmed']),
             'user_id' => User::factory(),
         ];
     }
