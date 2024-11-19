@@ -24,8 +24,24 @@ class LoginValidationTest extends TestCase
             'password' => 'password'
         ]);
 
-        $response->assertStatus(401);
-
-
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('email');
     }
+    /**
+     * Тест валидации на пустой пароль.
+     *
+     * @return void
+     */
+    public function test_login_validation_with_empty_password(){
+        $user = User::factory()->create();
+        $response = $this->post('/api/auth/login', [
+            'email' => $user->email,
+            'password' => ''
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password');
+    }
+
+
 }
