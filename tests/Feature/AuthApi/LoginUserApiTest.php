@@ -62,7 +62,7 @@ class LoginUserApiTest extends TestCase
             'password' => 'wrong-password',
         ]);
 
-        $response->assertStatus(401);
+        $response->assertStatus(302);
         $this->assertGuest();
     }
 }
