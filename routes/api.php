@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +22,10 @@ Route::group([
 
 ], function ($router) {
 
-    Route::post('register', 'AuthController@register');
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+    Route::post('register',[AuthApiController::class,'register']);
+    Route::post('login', [AuthApiController::class,'login']);
+    Route::post('logout', [AuthApiController::class,'logout']);
+    Route::post('refresh', [AuthApiController::class,'refresh']);
+    Route::post('me', [AuthApiController::class,'me']);
 
 });
