@@ -212,6 +212,67 @@ class RegisterValidationTest extends TestCase
         ]);
     }
 
+    /**
+     * Тест валидации на пустое поле password_confirmation.
+     *
+     * @return void
+     */
+    public function test_register_invalid_password_confirmation_with_empty_field()
+    {
+        $response = $this->post('/api/auth/register', [
+            'name' => 'Mark123',
+            'email' => $this->faker()->email(),
+            'password' => 'password',
+            'password_confirmation' => '',
+        ]);
 
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password_confirmation');
+        $this->assertDatabaseMissing('users', [
+            'email' => 'test1@test.com',
+        ]);
+    }
 
+    /**
+     * Тест валидации на несоответствие паролей password и password_confirmation.
+     *
+     * @return void
+     */
+    public function test_register_invalid_password_confirmation_with_not_matching_password()
+    {
+        $response = $this->post('/api/auth/register', [
+            'name' => 'Mark123',
+            'email' => $this->faker()->email(),
+            'password' => 'password123',
+            'password_confirmation' => 'password456',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password_confirmation');
+        $this->assertDatabaseMissing('users', [
+            'email' => 'test1@test.com',
+        ]);
+    }
+
+    /**
+     * Тест валидации на больше 255 символов password_confirmation.
+     *
+     * @return void
+     */
+    public function test_register_invalid_password_confirmation_with_max_length()
+    {
+        $passwordConfirmation = $this->faker()->text(900);
+        $response = $this->post('/api/auth/register', [
+            'name' => 'Mark123',
+            'email' => $this->faker()->email(),
+            'password' => 'password',
+            'password_confirmation' => $passwordConfirmation,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password_confirmation');
+        $this->assertDatabaseMissing('users', [
+            'email' => 'test1@test.com',
+        ]);
+    }
 }
