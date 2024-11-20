@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\AuthApi\Validation;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -119,6 +120,27 @@ class RegisterValidationTest extends TestCase
         $response = $this->post('/api/auth/register', [
             'name' => fake()->name(),
             'email' => 'test',
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('email');
+        $this->assertDatabaseMissing('users', [
+            'email' => 'test1@test.com',
+        ]);
+    }
+
+    /**
+     * Тест валидации на на занятый email.
+     *
+     * @return void
+     */
+
+    public function test_register_invalid_email(){
+        $user = User::factory()->create();
+        $response = $this->post('/api/auth/register', [
+            'name' => fake()->name(),
+            'email' => $user->email,
             'password' => 'password',
         ]);
 
