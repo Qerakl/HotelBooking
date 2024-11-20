@@ -150,4 +150,24 @@ class RegisterValidationTest extends TestCase
             'email' => 'test1@test.com',
         ]);
     }
+
+    /**
+     * Тест валидации на пустой password.
+     *
+     * @return void
+     */
+
+    public function test_register_invalid_password_with_empty_field(){
+        $response = $this->post('/api/auth/register', [
+            'name' => 'Mark123',
+            'email' => $this->faker()->email(),
+            'password' => '',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password');
+        $this->assertDatabaseMissing('users', [
+            'name' => 'Mark123',
+        ]);
+    }
 }
