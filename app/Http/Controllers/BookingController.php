@@ -13,6 +13,7 @@ class BookingController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Booking::class);
         $bookings = Booking::where('user_id', auth()->id())->paginate(10);
         return response()->json($bookings, 200);
     }
@@ -22,9 +23,7 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-        if (!auth()->check()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        }
+        $this->authorize('create', Booking::class);
 
         $booking = $request->validated();
         $booking['user_id'] = auth()->id();
@@ -38,10 +37,7 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        if ($booking->user_id !== auth()->id()) {
-            return response()->json(['message' => 'Access denied'], 403);
-        }
-
+        $this->authorize('view', $booking);
         return response()->json($booking, 200);
     }
 
@@ -50,6 +46,7 @@ class BookingController extends Controller
      */
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
+        $this->authorize('update', $booking);
         $booking->update($request->validated());
         return response()->json(['message' => 'Booking updated'], 200);
     }
@@ -59,9 +56,7 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        if ($booking->user_id != auth()->id()) {
-            return response()->json(['message' => 'Access denied'], 403);
-        }
+        $this->authorize('delete', $booking);
 
         $booking->delete();
         return response()->json(['message' => 'Booking deleted'], 200);
