@@ -170,4 +170,46 @@ class RegisterValidationTest extends TestCase
             'name' => 'Mark123',
         ]);
     }
+
+    /**
+     * Тест валидации на больше 255 символов password.
+     *
+     * @return void
+     */
+
+    public function test_register_invalid_password_with_max_length(){
+        $password = $this->faker()->text(900);
+        $response = $this->post('/api/auth/register', [
+            'name' => 'Mark123',
+            'email' => $this->faker()->email(),
+            'password' => $password,
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password');
+        $this->assertDatabaseMissing('users', [
+            'email' => 'test1@test.com',
+        ]);
+    }
+
+    /**
+     * Тест валидации на меньше 6 символов password.
+     *
+     * @return void
+     */
+
+    public function test_register_invalid_password_with_min_length(){
+        $response = $this->post('/api/auth/register', [
+            'name' => 'Mark123',
+            'email' => $this->faker()->email(),
+            'password' => '1234',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password');
+        $this->assertDatabaseMissing('users', [
+            'email' => 'test1@test.com',
+        ]);
+    }
+
 }
