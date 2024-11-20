@@ -88,4 +88,24 @@ class RegisterValidationTest extends TestCase
         ]);
     }
 
+    /**
+     * Тест валидации на больше 255 символов name.
+     *
+     * @return void
+     */
+
+    public function test_register_invalid_email_with_max_length(){
+        $email = $this->faker()->text(900);
+        $response = $this->post('/api/auth/register', [
+            'name' => 'Mark123',
+            'email' => $email . '@test.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('email');
+        $this->assertDatabaseMissing('users', [
+            'email' => 'test1@test.com',
+        ]);
+    }
 }
