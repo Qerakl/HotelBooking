@@ -13,15 +13,8 @@ class BookingController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $bookings = Booking::where('user_id', auth()->id())->paginate(10);
+        return response()->json($bookings, 200);
     }
 
     /**
@@ -29,7 +22,15 @@ class BookingController extends Controller
      */
     public function store(StoreBookingRequest $request)
     {
-        //
+        if (!auth()->check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $booking = $request->validated();
+        $booking['user_id'] = auth()->id();
+        Booking::create($booking);
+
+        return response()->json(['message' => 'Booking created'], 201);
     }
 
     /**
@@ -37,15 +38,11 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        //
-    }
+        if ($booking->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Access denied'], 403);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Booking $booking)
-    {
-        //
+        return response()->json($booking, 200);
     }
 
     /**
@@ -53,7 +50,8 @@ class BookingController extends Controller
      */
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
-        //
+        $booking->update($request->validated());
+        return response()->json(['message' => 'Booking updated'], 200);
     }
 
     /**
@@ -61,6 +59,11 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        //
+        if ($booking->user_id != auth()->id()) {
+            return response()->json(['message' => 'Access denied'], 403);
+        }
+
+        $booking->delete();
+        return response()->json(['message' => 'Booking deleted'], 200);
     }
 }

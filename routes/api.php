@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthApiController;
@@ -29,3 +30,5 @@ Route::group([
     Route::post('me', [AuthApiController::class,'me']);
 
 });
+
+Route::resource('booking', BookingController::class)->middleware('auth:api');
