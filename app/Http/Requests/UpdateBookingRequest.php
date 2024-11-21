@@ -22,20 +22,25 @@ class UpdateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'check_in_date' => 'sometimes|date|after_or_equal:today',
-            'check_out_date' => 'sometimes|date|after:check_in_date',
+            'check_in_date' => 'required|date|after_or_equal:today',
+            'check_out_date' => 'required|date|after:check_in_date',
         ];
     }
+
+
     /**
      * Get custom messages for validation errors.
      */
     public function messages(): array
     {
         return [
+            'check_in_date.required_without_all' => 'Дата заезда обязательна для заполнения, если не указана дата выезда.',
+            'check_out_date.required_without_all' => 'Дата выезда обязательна для заполнения, если не указана дата заезда.',
             'check_in_date.date' => 'Дата заезда должна быть корректной датой.',
             'check_in_date.after_or_equal' => 'Дата заезда не может быть раньше сегодняшнего дня.',
             'check_out_date.date' => 'Дата выезда должна быть корректной датой.',
             'check_out_date.after' => 'Дата выезда должна быть позже даты заезда.',
         ];
     }
+
 }

@@ -18,7 +18,6 @@ class UpdateBookingTest extends TestCase
     {
         parent::setUp();
 
-        // Создаем пользователя и авторизуем его
         $this->user = User::factory()->create([
             'password' => Hash::make('password'),
         ]);
@@ -30,7 +29,7 @@ class UpdateBookingTest extends TestCase
      */
     public function test_successful_booking_update()
     {
-        // Создаем тестовую запись бронирования
+
         $booking = Booking::factory()->create([
             'user_id' => $this->user->id,
             'check_in_date' => '2030-01-01',
@@ -43,7 +42,7 @@ class UpdateBookingTest extends TestCase
             'check_out_date' => '2030-02-05',
         ]);
 
-        // Проверяем статус ответа и данные в БД
+
         $response->assertStatus(200);
         $this->assertDatabaseHas('bookings', [
             'id' => $booking->id,
