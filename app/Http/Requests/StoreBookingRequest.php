@@ -14,7 +14,6 @@ class StoreBookingRequest extends FormRequest
         return [
             'check_in_date' => 'required|date|after_or_equal:today',
             'check_out_date' => 'required|date|after:check_in_date',
-            'status' => 'required|in:confirmed|unconfirmed',
         ];
     }
 
@@ -30,8 +29,6 @@ class StoreBookingRequest extends FormRequest
             'check_out_date.required' => 'Дата выезда обязательна для заполнения.',
             'check_out_date.date' => 'Дата выезда должна быть корректной датой.',
             'check_out_date.after' => 'Дата выезда должна быть позже даты заезда.',
-            'status.required' => 'Статус бронирования обязателен для заполнения.',
-            'status.in' => 'Статус должен быть либо "confirmed", либо "unconfirmed".',
         ];
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('check_in_date');
             $table->date('check_out_date')->nullable();
-            $table->enum('status', ['confirmed', 'unconfirmed']);
+            $table->enum('status', ['confirmed', 'unconfirmed'])->default('unconfirmed');
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();
         });
