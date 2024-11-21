@@ -47,7 +47,10 @@ class BookingController extends Controller
     public function update(UpdateBookingRequest $request, Booking $booking)
     {
         $this->authorize('update', $booking);
-        $booking->update($request->validated());
+        Booking::where('id', $booking->id)->update([
+            'check_in_date' => $request->check_in_date,
+            'check_out_date' => $request->check_out_date
+        ]);
         return response()->json(['message' => 'Booking updated'], 200);
     }
 
