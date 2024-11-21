@@ -4,7 +4,7 @@ use App\Http\Controllers\BookingController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthApiController;
-
+use \App\Http\Controllers\FilterBookingApiController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -32,3 +32,4 @@ Route::group([
 });
 
 Route::resource('booking', BookingController::class)->middleware('auth:api');
+Route::post('filter', [FilterBookingApiController::class, 'filter']);
