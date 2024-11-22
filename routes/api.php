@@ -32,4 +32,4 @@ Route::group([
 });
 
 Route::resource('booking', BookingController::class)->middleware('auth:api');
-Route::post('filter', [FilterBookingApiController::class, 'filter'])->middleware('auth:api');
+Route::post('filter', [FilterBookingApiController::class, 'filter'])->middleware('auth:api')->name('booking.filter');
